@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	yaml "gopkg.in/yaml.v2"
@@ -68,5 +69,10 @@ func main() {
 	mapHandlers(router, fileData, getFileType(*filename))
 	router.HandleFunc("/routes", createAddRoutesHandler(router))
 
-	http.ListenAndServe(":8000", router)
+	port := 8000
+	fmt.Printf("The server is running on port %d\n", port)
+	err := http.ListenAndServe(":"+strconv.Itoa(port), router)
+	if err != nil {
+		fmt.Printf("Error when starting the server: %s\n", err.Error())
+	}
 }

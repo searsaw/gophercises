@@ -13,7 +13,7 @@ func sayHello(w http.ResponseWriter, r *http.Request) {
 
 func createRedirectRouteHandler(redirectURL string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, redirectURL, http.StatusMovedPermanently)
+		http.Redirect(w, r, redirectURL, http.StatusFound)
 	}
 }
 
@@ -34,10 +34,10 @@ func createAddRoutesHandler(router *http.ServeMux) http.HandlerFunc {
 
 		var datatype string
 		switch r.Header.Get("Content-Type") {
-		case "application/x-yaml":
-			datatype = "yaml"
 		case "application/json":
 			datatype = "json"
+		case "application/x-yaml":
+			fallthrough
 		default:
 			datatype = "yaml"
 		}
